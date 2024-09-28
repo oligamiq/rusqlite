@@ -140,6 +140,10 @@ mod build_bundled {
             .flag("-D_POSIX_THREAD_SAFE_FUNCTIONS") // cross compile with MinGW
             .warnings(false);
 
+        if std::env::var("TARGET").map_or(false, |v| v == "wasm32-wasip1-threads") {
+            cfg.flag("-pthread");
+        }
+
         if cfg!(feature = "bundled-sqlcipher") {
             cfg.flag("-DSQLITE_HAS_CODEC").flag("-DSQLITE_TEMP_STORE=2");
 
